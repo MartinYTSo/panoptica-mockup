@@ -52,6 +52,7 @@ html, body {
   min-height: 0;
 }
 
+/* ---------- Top classification bar ---------- */
 .topbar {
   height: 24px;
   background: var(--void);
@@ -77,6 +78,7 @@ html, body {
 .theme-toggle:hover { color: var(--white); }
 .theme-toggle svg { width: 14px; height: 14px; }
 
+/* ---------- App shell ---------- */
 .shell {
   display: grid;
   grid-template-columns: clamp(200px, 16vw, 240px) 1fr;
@@ -84,6 +86,7 @@ html, body {
   min-height: 0;
 }
 
+/* ---------- Left sidebar ---------- */
 .sidebar {
   background: var(--black);
   border-right: 1px solid var(--void);
@@ -135,6 +138,7 @@ html, body {
 .nav-item .icon { width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .nav-item .icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.6; }
 
+/* ===== SigActs live stream (left sidebar) ===== */
 .stream {
   flex: 1;
   min-height: 0;
@@ -219,6 +223,7 @@ html, body {
 .user-menu-item:last-child { border-bottom: none; }
 .user-menu-item:hover { background: var(--void-3); color: var(--white); }
 
+/* ---------- Main pane ---------- */
 .main {
   display: flex;
   flex-direction: column;
@@ -248,9 +253,13 @@ html, body {
 .header-actions span { cursor: pointer; }
 .header-actions span:hover { color: var(--white); }
 
+/* ---------- Views ---------- */
 .view { display: none; flex: 1; flex-direction: column; min-height: 0; }
 .view.active { display: flex; }
 
+/* ============================================================
+   MAP VIEW (home — map + chat fused)
+   ============================================================ */
 .map-layout {
   flex: 1;
   display: grid;
@@ -260,7 +269,7 @@ html, body {
 
 .map-canvas-wrap { position: relative; background: var(--void-3); overflow: hidden; min-width: 0; }
 
-/* Leaflet basemap - No grayscale filter, full color OSM */
+/* Leaflet basemap styling */
 #leafletMap { position: absolute; inset: 0; width: 100%; height: 100%; background: var(--black); z-index: 1; }
 .leaflet-container { background: var(--black); font-family: var(--font); }
 .leaflet-control-attribution {
@@ -270,6 +279,12 @@ html, body {
 .leaflet-control-attribution a { color: var(--slate) !important; }
 .leaflet-control-zoom { display: none; }
 
+/* Tactical Dark map tile filter applied ONLY in Dark Mode */
+html:not([data-theme="light"]) #leafletMap .leaflet-tile-pane {
+  filter: grayscale(1) invert(1) brightness(0.92) contrast(0.95);
+}
+
+/* SVG overlay pane: sits on top of tiles, screen-pixel coordinate space */
 .hawkes-overlay {
   position: absolute; inset: 0; width: 100%; height: 100%;
   z-index: 10; pointer-events: none;
@@ -292,6 +307,7 @@ html, body {
 
 .map-canvas-wrap.selecting { cursor: crosshair; }
 
+/* Hint chip */
 .map-hint {
   position: absolute; bottom: 200px; left: 50%; transform: translateX(-50%);
   font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate);
@@ -301,6 +317,7 @@ html, body {
 .map-hint-key { color: var(--white); font-weight: 700; }
 .map-hint.hidden { opacity: 0; }
 
+/* Event markers (JS-rendered) */
 .evt { cursor: pointer; transform-box: fill-box; transform-origin: bottom center; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .evt.hl { transform: translateY(-4px) scale(1.15); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6)); }
 .evt-dot-indep { fill: transparent; stroke: var(--white); stroke-width: 1.6; }
@@ -309,25 +326,28 @@ html, body {
 .evt.dim { opacity: 0.25; }
 .evt.hl .evt-dot-indep, .evt.hl .evt-dot-trig { stroke: var(--ash); }
 
+/* Trigger edges */
 .trig-edge { stroke: var(--white); fill: none; transition: opacity 0.2s ease; }
 .trig-edge.dim { opacity: 0.06 !important; }
 
+/* ===== Hawkes overlay strip ===== */
 .hawkes-strip {
   position: absolute; bottom: 16px;
   left: 50%; transform: translateX(-50%);
-  width: 1209px; 
-  max-width: calc(100% - 32px);
+  width: 1209px; /* Requested exact width */
+  max-width: calc(100% - 32px); /* Fallback for smaller screens */
   background: var(--glass-bg);
   border: 1px solid var(--carbon);
   z-index: 30;
   display: flex; flex-direction: column;
-  transition: height 0.25s ease;
+  transition: height 0.25s ease, max-height 0.25s ease;
   backdrop-filter: blur(2px);
 }
 .hawkes-strip.collapsed { height: 40px; }
 .hawkes-strip.open { height: 174px; }
 .hawkes-strip.tall { height: 320px; }
 
+/* Pill (collapsed) */
 .hawkes-pill {
   height: 40px; flex-shrink: 0;
   display: flex; align-items: center; gap: 12px;
@@ -340,6 +360,7 @@ html, body {
 .hp-expand { color: var(--slate); font-size: 11px; }
 .hawkes-pill:hover .hp-expand { color: var(--white); }
 
+/* Body (expanded) */
 .hawkes-body { display: none; flex-direction: column; flex: 1; min-height: 0; }
 .hawkes-strip.open .hawkes-body, .hawkes-strip.tall .hawkes-body { display: flex; }
 
@@ -375,6 +396,7 @@ html, body {
 .hl-parent { border-radius: 0; transform: rotate(45deg); border: 1.5px solid var(--white); width: 11px; height: 11px; margin: 0 2px; }
 .hl-arc { width: 18px; height: 0; border-top: 1.5px solid var(--white); flex-shrink: 0; }
 
+/* Timeline SVG element styles */
 .tl-axis { stroke: var(--carbon); stroke-width: 1; }
 .tl-tick-label { fill: var(--slate); font: 400 9px var(--font); letter-spacing: 0.08em; }
 .tl-arc { stroke: var(--white); fill: none; transition: opacity 0.2s ease; }
@@ -386,6 +408,7 @@ html, body {
 .tl-arc.dim { opacity: 0.05 !important; }
 .tl-evt.dim { opacity: 0.3; }
 
+/* Right rail */
 .rail {
   background: var(--black);
   border-left: 1px solid var(--void);
@@ -396,6 +419,7 @@ html, body {
   position: relative;
 }
 
+/* Row 1: primary tabs (Chat only now) */
 .rail-tabs {
   display: flex;
   border-bottom: 1px solid var(--void);
@@ -409,6 +433,7 @@ html, body {
   cursor: pointer; font-family: var(--font);
 }
 
+/* Row 2: utility row (search icon / history) */
 .rail-util {
   display: flex;
   align-items: center;
@@ -435,6 +460,7 @@ html, body {
 .rail-panel.active { display: flex; }
 .rail-scroll { flex: 1; overflow-y: auto; padding: 18px 16px 14px; min-height: 0; }
 
+/* ---------- Chat (in rail) ---------- */
 .mini-thread { display: flex; flex-direction: column; gap: 20px; }
 .mini-thread .msg-bubble { font-size: 13px; line-height: 1.65; max-width: 100%; }
 .mini-thread .msg.user .msg-bubble { padding: 12px 14px; }
@@ -443,6 +469,7 @@ html, body {
 .mini-thread .msg-avatar.agent svg { width: 11px; height: 11px; }
 .mini-thread .msg-meta { font-size: 8px; gap: 8px; }
 
+/* ---------- Messages (shared) ---------- */
 .msg { display: flex; gap: 16px; max-width: 100%; }
 .msg.user { flex-direction: row-reverse; }
 .msg-avatar {
@@ -452,7 +479,7 @@ html, body {
   background: var(--void); border: 1px solid var(--carbon);
 }
 .msg-avatar.agent { background: var(--black); border: 1px solid var(--white); }
-.msg-avatar.agent svg { width: 13px; height: 13px; color: var(--white); }
+.msg-avatar.agent svg { width: 13px; height: 13px; }
 .msg-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .msg-meta { display: flex; align-items: center; gap: 10px; font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--slate); flex-wrap: wrap; }
 .msg.user .msg-meta { justify-content: flex-end; }
@@ -466,9 +493,11 @@ html, body {
 .msg-actions svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.6; cursor: pointer; }
 .msg-actions svg:hover { color: var(--white); }
 
+/* Inline context pills inside user bubbles */
 .msg-context { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--carbon); }
 .msg-context .ctx-pill { display: inline-flex; align-items: center; font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white); background: var(--black); border: 1px solid var(--white); padding: 3px 8px; }
 
+/* Map-action chips in agent messages */
 .map-action-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .map-action {
   display: inline-flex; align-items: center; gap: 8px;
@@ -479,6 +508,7 @@ html, body {
 .map-action:hover { background: var(--void); border-color: var(--white); }
 .map-action::before { content: ''; width: 8px; height: 8px; border: 1px solid var(--white); display: inline-block; flex-shrink: 0; }
 
+/* Typing indicator */
 .typing { display: flex; }
 .typing .dots { display: inline-flex; gap: 5px; align-items: center; padding: 12px 4px; }
 .typing .dots span { width: 6px; height: 6px; background: var(--slate); display: inline-block; animation: typing-blink 1.2s infinite ease-in-out; }
@@ -486,6 +516,7 @@ html, body {
 .typing .dots span:nth-child(3) { animation-delay: 0.4s; }
 @keyframes typing-blink { 0%, 80%, 100% { opacity: 0.2; } 40% { opacity: 1; } }
 
+/* ---------- Composer (in rail) ---------- */
 .rail-composer { border-top: 1px solid var(--void); padding: 14px; background: var(--black); flex-shrink: 0; }
 .composer { background: var(--void-2); border: 1px solid var(--carbon); padding: 12px 14px 10px; display: flex; flex-direction: column; gap: 10px; }
 .composer-pills { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -506,6 +537,7 @@ html, body {
 .send-btn svg { width: 13px; height: 13px; stroke: var(--black); fill: none; stroke-width: 2; }
 .send-btn:hover { background: var(--ash); }
 
+/* ---------- Pop-up overlay (search / history / source) ---------- */
 .overlay-backdrop {
   position: absolute; inset: 0;
   background: var(--glass-overlay);
@@ -545,6 +577,9 @@ html, body {
 .source-body { padding: 18px; font-size: 13px; line-height: 1.75; color: var(--ash); }
 .source-body .src-meta { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--slate); margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--void); }
 
+/* ============================================================
+   DATA VIEW (separate page)
+   ============================================================ */
 .data-layout { flex: 1; display: grid; grid-template-columns: 1fr clamp(300px, 26vw, 380px); min-height: 0; }
 .data-main { overflow-y: auto; padding: 28px 36px 56px; min-width: 0; }
 
@@ -581,6 +616,7 @@ html, body {
 .status-dot.off::before { background: var(--carbon); }
 .status-dot.off { color: var(--slate); }
 
+/* Data right rail */
 .data-rail { background: var(--black); border-left: 1px solid var(--void); overflow-y: auto; padding: 20px 18px; min-height: 0; }
 .data-rail-label { font-size: 9px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--slate); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--void); }
 .data-rail-section { margin-bottom: 28px; }
@@ -600,6 +636,7 @@ html, body {
 ::-webkit-scrollbar-track { background: var(--black); }
 ::-webkit-scrollbar-thumb { background: var(--void); border: 1px solid var(--carbon); }
 
+/* ---------- Responsive ---------- */
 @media (max-width: 1100px) {
   .map-layout { grid-template-columns: 1fr clamp(320px, 34vw, 380px); }
   .data-stats { grid-template-columns: repeat(2, 1fr); }
@@ -728,7 +765,7 @@ html, body {
           <svg id="hawkesOverlay" class="hawkes-overlay" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <marker id="arrowhead" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
-                <path d="M0,0 L6,3 L0,6" fill="none" stroke="currentColor" style="color: var(--white)" stroke-width="1.2"/>
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="var(--white)" stroke-width="1.2"/>
               </marker>
             </defs>
             <!-- Hawkes trigger edges (beneath markers) -->
@@ -736,7 +773,7 @@ html, body {
             <!-- SigAct event markers -->
             <g id="event-markers"></g>
             <!-- Selection box (right-click drag) -->
-            <rect id="selection-box" x="0" y="0" width="0" height="0" fill="var(--glass-sel)" stroke="currentColor" style="color: var(--white)" stroke-width="1.5" stroke-dasharray="6 4" visibility="hidden"/>
+            <rect id="selection-box" x="0" y="0" width="0" height="0" fill="var(--glass-sel)" stroke="var(--white)" stroke-width="1.5" stroke-dasharray="6 4" visibility="hidden"/>
           </svg>
 
           <div class="map-overlay">
@@ -788,8 +825,7 @@ html, body {
 
               <!-- Timeline canvas -->
               <div class="hawkes-timeline-wrap">
-                <!-- Removed preserveAspectRatio="none" to let us control internal coordinate math -->
-                <svg id="hawkesTimeline" class="hawkes-timeline" xmlns="http://www.w3.org/2000/svg"></svg>
+                <svg id="hawkesTimeline" class="hawkes-timeline" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
               </div>
 
               <!-- Legend -->
@@ -945,6 +981,7 @@ html, body {
           </table>
         </div>
 
+        <!-- Data right rail: Layers / Entities (per "Data, layers and entities") -->
         <aside class="data-rail">
           <div class="data-rail-section">
             <div class="data-rail-label">Layers</div>
@@ -1070,6 +1107,7 @@ function sendMessage(text) {
   setTimeout(()=>{ convo.push(generateReply(text, pills)); renderChat(); }, 750);
 }
 
+// ---------- Context pills ----------
 const contextPills = new Set();
 function renderPills() {
   const el = document.getElementById('composerPills');
@@ -1086,6 +1124,7 @@ function renderPills() {
 }
 function addPill(label){ contextPills.add(label); renderPills(); switchRail('chat'); }
 
+// ---------- Map feature clicks ----------
 function wireFeatureClicks() {
   document.querySelectorAll('.map-clickable').forEach(el=>{
     el.addEventListener('click', e=>{
@@ -1098,6 +1137,7 @@ function wireFeatureClicks() {
   });
 }
 
+// ---------- Agent → map actions ----------
 function flashFeature(fid){
   const el = document.querySelector(`[data-fid="${fid}"]`);
   if(!el) return;
@@ -1109,6 +1149,7 @@ function wireMapActions(){
   });
 }
 
+// ---------- Rail tabs ----------
 function switchRail(which){
   document.querySelectorAll('.rail-tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===which));
   document.getElementById('railChat').classList.toggle('active', which==='chat');
@@ -1117,6 +1158,7 @@ document.querySelectorAll('.rail-tab').forEach(tab=>{
   tab.addEventListener('click', ()=>switchRail(tab.dataset.tab));
 });
 
+// ---------- View switching ----------
 function showView(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById(name+'View').classList.add('active');
@@ -1126,6 +1168,7 @@ function showView(name){
 document.getElementById('mapNav').addEventListener('click', ()=>showView('map'));
 document.getElementById('dataNav').addEventListener('click', ()=>showView('data'));
 
+// ---------- SigActs List in the Left Sidebar ----------
 const SIGACTS = [
   { id:'sa-423', cat:'Movement', type:'move', time:'02:09 ZULU', headline:'Dismounted movement, est. 8–12 PAX, vicinity NAI-3 moving SW toward PL Bravo.', loc:'33U VP 71200 18400 · Sector 7' },
   { id:'sa-421', cat:'Small Arms', type:'sa', time:'YDA 22:14', headline:'Small-arms exchange near route junction; no friendly casualties, contact broken after 4 min.', loc:'33U VP 43100 38100 · Sector 7' },
@@ -1150,6 +1193,7 @@ function renderSigacts(){
   });
 }
 
+// ---------- Sources (raw read pop-up) ----------
 const SOURCES = {
   'sa-419': { title:'SA-2025-0419 · IED', meta:'HUMINT · UNCLASS // CUI · 2D AGO 09:40 ZULU', body:'At approximately 0940Z, an improvised explosive device detonated along the main supply route vicinity grid VP 32200 26100. Crater morphology and recovered fragments are consistent with a command-wire initiated device. No friendly casualties. EOD team dispatched and confirmed secondary-device sweep negative. Pattern matches two prior emplacements at the same chokepoint over the trailing 30 days, suggesting a persistent emplacement cell operating in the sector.' },
   'sa-421': { title:'SA-2025-0421 · Small Arms', meta:'HUMINT · UNCLASS // CUI · YDA 22:14 ZULU', body:'Patrol reported a brief small-arms exchange near the route junction at grid VP 43100 38100. Estimated two to four hostile firing positions, contact broken after approximately four minutes with no friendly casualties. Direction of withdrawal assessed as southwest toward dense terrain. Recommend ISR re-task to confirm exfiltration route.' },
@@ -1163,6 +1207,7 @@ function openSource(id){
   document.getElementById('sourceOverlay').classList.add('open');
 }
 
+// ---------- Search & History pop-ups ----------
 const HISTORY = [
   { t:'JIFX 26-4 — Sector 7 ISR Gap', m:'COA synthesis · today 14:22' },
   { t:'CR-Filter Tuning', m:'Tarjan SCC · 04 APR' },
@@ -1216,19 +1261,29 @@ document.querySelectorAll('.overlay-backdrop').forEach(o=>{
 });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeOverlays(); });
 
+// ---------- Composer wiring ----------
 document.getElementById('sendBtn').addEventListener('click', ()=>sendMessage(document.getElementById('composerInput').value));
 document.getElementById('composerInput').addEventListener('keydown', e=>{
   if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(document.getElementById('composerInput').value); }
 });
 
+// ============================================================
+//  HAWKES INTERACTION ENGINE & LEAFLET OPENSTREETMAP INIT
+// ============================================================
+// Event dataset: lat/lng place events on the real OSM basemap (AO centered near a plausible grid).
+// t is hours-ago (smaller = more recent). parent = id that triggered
+// this event (null = independent / background). p = trigger probability.
 const AO = { lat: 34.5420, lng: 69.1620 }; 
 const HAWKES_EVENTS = [
+  // --- Self-exciting IED cascade (the story) ---
   { id:'SA-0419', cat:'IED',        lat:34.5455, lng:69.1640, t:62, parent:null,      p:null  },
   { id:'SA-0421', cat:'Small Arms', lat:34.5468, lng:69.1665, t:50, parent:'SA-0419', p:0.78 },
   { id:'SA-0425', cat:'IED',        lat:34.5440, lng:69.1658, t:44, parent:'SA-0419', p:0.66 },
   { id:'SA-0428', cat:'IED',        lat:34.5452, lng:69.1690, t:24, parent:'SA-0421', p:0.71 },
   { id:'CTC-04',  cat:'Cluster',    lat:34.5430, lng:69.1705, t:12, parent:'SA-0428', p:0.62 },
+  // --- Weaker secondary pair ---
   { id:'SA-0430', cat:'Movement',   lat:34.5418, lng:69.1632, t:30, parent:'SA-0425', p:0.41 },
+  // --- Independent background events ---
   { id:'SA-0412', cat:'IED',        lat:34.5490, lng:69.1585, t:70, parent:null,      p:null  },
   { id:'SA-0415', cat:'Small Arms', lat:34.5495, lng:69.1730, t:55, parent:null,      p:null  },
   { id:'SA-0418', cat:'Movement',   lat:34.5380, lng:69.1560, t:40, parent:null,      p:null  },
@@ -1254,8 +1309,10 @@ function clearLock() {
     highlight(prev, false);
   }
 }
+// Clear lock on global double click
 document.addEventListener('dblclick', clearLock);
 
+// ---- Leaflet map init ----
 let lmap = null;
 function initMap() {
   if (lmap) return;
@@ -1271,26 +1328,37 @@ function initMap() {
     attribution: '© OpenStreetMap'
   }).addTo(lmap);
 
+  // our custom +/- controls
   document.querySelectorAll('.map-ctrl').forEach((b,i)=>{
     b.addEventListener('click', ()=> i===0 ? lmap.zoomIn() : lmap.zoomOut());
   });
 
+  // re-project overlay whenever the map moves/zooms
   lmap.on('move zoom moveend zoomend resize', ()=>{ if(hawkesState.active) renderHawkesMap(); else renderHawkesMap(); });
+
   lmap.on('dblclick', clearLock);
 
+  // first render once tiles/layout settle
   setTimeout(()=>{ 
       lmap.invalidateSize(); 
-      runHawkes(HAWKES_EVENTS.map(e=>e.id)); 
+      runHawkes(HAWKES_EVENTS.map(e=>e.id)); // Default populate timeline and active state
       renderHawkesMap(); 
   }, 200);
 }
 
+// ---- Coordinate mapping via Leaflet ----
+// returns screen (container) px for a lat/lng
 function projXY(lat, lng) {
   if(!lmap) return {x: 0, y: 0};
   const p = lmap.latLngToContainerPoint([lat, lng]);
   return { x: p.x, y: p.y };
 }
+// returns lat/lng for a container px point
+function unproj(x, y) {
+  return lmap.containerPointToLatLng([x, y]);
+}
 
+// ---- Right-click drag selection ----
 const canvasWrap = document.querySelector('.map-canvas-wrap');
 const selBox = document.getElementById('selection-box');
 let dragStart = null, dragging = false;
@@ -1298,11 +1366,11 @@ let dragStart = null, dragging = false;
 canvasWrap.addEventListener('contextmenu', e => e.preventDefault());
 
 canvasWrap.addEventListener('mousedown', e => {
-  if (e.button !== 2) return;
+  if (e.button !== 2) return;            // right button only
   e.preventDefault();
   dragging = true;
   canvasWrap.classList.add('selecting');
-  if (lmap) lmap.dragging.disable();
+  if (lmap) lmap.dragging.disable();     // stop map pan during selection
   const r = canvasWrap.getBoundingClientRect();
   dragStart = { x: e.clientX - r.left, y: e.clientY - r.top };
   selBox.setAttribute('visibility','visible');
@@ -1332,6 +1400,7 @@ window.addEventListener('mouseup', e => {
 
   if (w < 12 || h < 12) { selBox.setAttribute('visibility','hidden'); return; }
 
+  // Which events project inside the screen-space box?
   const inside = HAWKES_EVENTS.filter(ev => {
     const p = projXY(ev.lat, ev.lng);
     return p.x>=x && p.x<=x+w && p.y>=y && p.y<=y+h;
@@ -1340,29 +1409,35 @@ window.addEventListener('mouseup', e => {
   setTimeout(()=>selBox.setAttribute('visibility','hidden'), 1200);
 });
 
+// ---- Run the (mock) Hawkes fit on a selection ----
 function runHawkes(ids) {
   if (!ids.length) return;
   hawkesState.active = true;
   hawkesState.selectedIds = ids;
 
+  // hide hint
   document.getElementById('mapHint').classList.add('hidden');
 
+  // compute branching ratio over the selection (mock: mean of child p's present)
   const children = ids.map(evtById).filter(e=>e.parent && ids.includes(e.parent) && e.p!=null);
   const eta = children.length ? (children.reduce((s,e)=>s+e.p,0)/children.length) : 0;
   const triggeredCount = children.length;
   const indepCount = ids.length - triggeredCount;
 
+  // update strip meta
   document.getElementById('hpMeta').textContent =
     `${ids.length} events · η ${eta.toFixed(2)} · ${triggeredCount} triggered`;
   document.getElementById('hhSub').textContent =
     `Selection · ${ids.length} events · η ${eta.toFixed(2)} · ${indepCount} independent`;
 
+  // open the strip
   setStripState('open');
 
   renderHawkesMap();
   renderHawkesTimeline();
 }
 
+// ---- Render markers + edges on the MAP ----
 function renderHawkesMap() {
   const mk = document.getElementById('event-markers');
   const eg = document.getElementById('trigger-edges');
@@ -1370,6 +1445,7 @@ function renderHawkesMap() {
   const sel = hawkesState.selectedIds;
   const parents = new Set(HAWKES_EVENTS.filter(e=>e.parent).map(e=>e.parent));
 
+  // markers mapped dynamically to Leaflet projection
   mk.innerHTML = HAWKES_EVENTS.map(ev => {
     const inSel = !hawkesState.active || sel.includes(ev.id);
     const isTriggered = ev.parent && ev.p!=null && ev.p>=th && sel.includes(ev.parent);
@@ -1393,6 +1469,7 @@ function renderHawkesMap() {
     </g>`;
   }).join('');
 
+  // edges (parent -> child), mapped dynamically to Leaflet projection
   eg.innerHTML = HAWKES_EVENTS.filter(ev =>
     ev.parent && ev.p!=null && sel.includes(ev.id) && sel.includes(ev.parent)
   ).map(ev => {
@@ -1411,27 +1488,26 @@ function renderHawkesMap() {
 
   wireMarkerHover();
   
+  // re-apply lock highlights if any
   if (lockedHighlightId) {
       highlight(lockedHighlightId, true);
   }
 }
 
+// ---- Render the TIMELINE strip ----
 function renderHawkesTimeline() {
   const svg = document.getElementById('hawkesTimeline');
   const wrap = svg.parentElement;
-  
-  // Hardcoded to ensure perfect stable drawing regardless of CSS state delays
-  const W = wrap.clientWidth || 1179; // strip minus padding
-  const H = 104; // 174px - 70px approx offset
-
+  const W = wrap.clientWidth || 900, H = wrap.clientHeight || 90;
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   const sel = hawkesState.selectedIds;
   const th = hawkesState.threshold;
   const events = sel.map(evtById).filter(Boolean);
   if (!events.length) { svg.innerHTML=''; return; }
 
+  // time axis: map t (hours ago) to x. Newer (small t) on the RIGHT.
   const tMax = Math.max(...events.map(e=>e.t)), tMin = Math.min(...events.map(e=>e.t));
-  const padL = 40, padR = 30, baseY = H - 26;
+  const padL = 40, padR = 30, padTop = 14, baseY = H - 26;
   const span = (tMax - tMin) || 1;
   const tx = t => padL + (1 - (t - tMin)/span) * (W - padL - padR);
 
@@ -1439,10 +1515,12 @@ function renderHawkesTimeline() {
 
   let html = '';
   html += `<defs><marker id="arrowhead-tl" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="var(--white)" stroke-width="1.2"/></marker></defs>`;
+  // axis
   html += `<line class="tl-axis" x1="${padL}" y1="${baseY}" x2="${W-padR}" y2="${baseY}"/>`;
   html += `<text class="tl-tick-label" x="${padL}" y="${baseY+16}">−${tMax}H</text>`;
   html += `<text class="tl-tick-label" x="${W-padR-22}" y="${baseY+16}">NOW</text>`;
 
+  // arcs (parent -> child) above the axis
   events.forEach(ev => {
     if (!ev.parent || ev.p==null || !sel.includes(ev.parent)) return;
     const par = evtById(ev.parent);
@@ -1456,6 +1534,7 @@ function renderHawkesTimeline() {
       stroke-width="${below?1:1.4}" opacity="${op}" marker-end="url(#arrowhead-tl)"/>`;
   });
 
+  // event dots on the axis
   events.forEach(ev => {
     const x = tx(ev.t);
     const isTriggered = ev.parent && ev.p!=null && ev.p>=th && sel.includes(ev.parent);
@@ -1478,11 +1557,13 @@ function renderHawkesTimeline() {
   svg.innerHTML = html;
   wireTimelineHover();
   
+  // re-apply lock highlights if any
   if (lockedHighlightId) {
       highlight(lockedHighlightId, true);
   }
 }
 
+// ---- Threshold slider ----
 const threshSlider = document.getElementById('threshSlider');
 threshSlider.addEventListener('input', () => {
   hawkesState.threshold = threshSlider.value/100;
@@ -1490,11 +1571,13 @@ threshSlider.addEventListener('input', () => {
   if (hawkesState.active) { renderHawkesMap(); renderHawkesTimeline(); }
 });
 
+// ---- Strip state machine: collapsed / open / tall ----
 function setStripState(state) {
   const strip = document.getElementById('hawkesStrip');
   strip.classList.remove('collapsed','open','tall');
   strip.classList.add(state);
   if (state!=='collapsed') {
+    // timeline needs a tick to get real dimensions
     setTimeout(renderHawkesTimeline, 30);
   }
 }
@@ -1507,6 +1590,7 @@ document.getElementById('hawkesTall').addEventListener('click', ()=>{
   setStripState(strip.classList.contains('tall') ? 'open' : 'tall');
 });
 
+// ---- Cross-highlight: map <-> timeline ----
 function highlight(id, on) {
   if (lockedHighlightId && lockedHighlightId !== id) return;
   if (lockedHighlightId && !on) return;
@@ -1514,6 +1598,7 @@ function highlight(id, on) {
   document.querySelectorAll('.evt').forEach(g=>{
     g.classList.toggle('hl', on && g.dataset.evt===id);
   });
+  // dim non-related edges when hovering an event
   document.querySelectorAll('.trig-edge').forEach(p=>{
     const [a,b] = p.dataset.edge.split('->');
     p.style.opacity = on ? ((a===id||b===id)? '' : '0.06') : '';
@@ -1528,7 +1613,6 @@ function highlight(id, on) {
     else p.style.opacity = '';
   });
 }
-
 function wireMarkerHover() {
   document.querySelectorAll('.evt').forEach(g=>{
     g.addEventListener('mouseenter', ()=>highlight(g.dataset.evt, true));
@@ -1563,15 +1647,20 @@ function wireTimelineHover() {
   });
 }
 
+// stop strip interactions from falling through to the map (selection bug guard)
 document.getElementById('hawkesStrip').addEventListener('mousedown', e=>e.stopPropagation());
 document.getElementById('hawkesStrip').addEventListener('contextmenu', e=>e.stopPropagation());
+
+// Re-render timeline on window resize when open
 window.addEventListener('resize', ()=>{ if(hawkesState.active) renderHawkesTimeline(); });
 
+// ---------- Theme Toggle ----------
 document.getElementById('themeToggle').addEventListener('click', () => {
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
 });
 
+// ---------- User Settings Menu ----------
 const userMenuBtn = document.getElementById('userMenuBtn');
 const userMenu = document.getElementById('userMenu');
 userMenuBtn.addEventListener('click', (e) => {
@@ -1584,10 +1673,12 @@ document.addEventListener('click', (e) => {
   }
 });
 
+
+// ---------- Init ----------
 wireFeatureClicks();
 renderChat();
 renderSigacts();
-initMap();
+initMap(); // Initializes Leaflet and projects the Hawkes Process events automatically
 </script>
 </body>
 </html>
